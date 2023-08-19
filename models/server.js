@@ -18,6 +18,7 @@ class Server {
             // usuarios: '/api/usuarios',
             // uploads: '/api/uploads',
             jobs: '/api/jobs',
+            executejobs: '/api/executejobs',
         };
 
         // Conectar a la BD
@@ -61,6 +62,7 @@ class Server {
         // this.app.use(this.paths.usuarios, require('../routes/usuarios.routes'));
         // this.app.use(this.paths.uploads, require('../routes/uploads.routes'));
         this.app.use(this.paths.jobs, require('../routes/jobs.routes'));
+        this.app.use(this.paths.executejobs, require('../routes/executejobs.routes'));
     }
 
     listen() {
