@@ -16,7 +16,11 @@ const infoempleo = async () => {
         const url = 'https://www.infoempleo.com/trabajo/';
 
         console.log('Launching browser...');
-        const browser = await puppeteer.launch({ headless: 'new' });
+        const browser = await puppeteer.launch({
+            headless: 'new',
+            ignoreDefaultArgs: ['--disable-extensions'],
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        });
 
         console.log('Creating new page...');
         const page = await browser.newPage();
