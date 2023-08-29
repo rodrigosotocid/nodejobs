@@ -8,15 +8,14 @@ const { Job } = require('../models');
 //* Tarea programada para ejecutar cada 4 horas
 //*---------------------------------------------*/
 const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
-    try {
-        console.log('Ejecutando tarea programada...');
+    console.log('Ejecutando tarea programada...');
 
+    try {
         console.log('\n* Task App-01');
         await infoempleo();
 
         console.log('\n* Task App-02');
         await infoJobs();
-
 
         console.log(`* ${fechaHoraActual()} - Tarea ejecutada y almacenada en DB.`);
     } catch (error) {

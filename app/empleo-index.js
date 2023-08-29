@@ -3,7 +3,13 @@ const puppeteer = require('puppeteer');
 const Job = require('../models/job');
 const { saveJobs } = require('./save-jobs');
 const { dbConnection } = require('../database/config');
-const { URL_INFOEMPLEO, VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO } = require('../helpers/const-strings');
+const {
+    URL_INFOEMPLEO,
+    VIEWPORT,
+    BROWSER_ARGS,
+    NAV_CONFIG,
+    PAGE_GOTO
+} = require('../helpers/const-strings');
 
 // dbConnection();
 
@@ -74,22 +80,21 @@ const infoempleo = async () => {
 
             jobs.url = enlace ?? '';
             const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
-
-            if (jobs.titulo != null && !existeTitulo) {
-                // console.log('...NUEVO ITEMS EN DB');
-                todasLasOfertas.push(jobs);
-            }
+            if (jobs.titulo != null && !existeTitulo) todasLasOfertas.push(jobs);
         }
-
-        console.log(`- Total App_01 a guardar: << ${todasLasOfertas.length} items >>`);
+        console.log(`- Total a guardar: <<${todasLasOfertas.length} items>>`);
         if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
-        console.log('End: Browser App_01 closed');
 
     } catch (error) {
         console.log('*** Error inesperado en App_01 ***', error.message);
     }
+    console.log('End App_01');
 }
 
+
+//************/
+//* INFOJOBS */
+//************/
 const infoJobs = async () => {
     try {
         console.log('App-02');
@@ -97,6 +102,8 @@ const infoJobs = async () => {
         console.log('*** Error inesperado en App-02 ***', error.message);
     }
 }
+
+
 
 module.exports = {
     infoempleo,

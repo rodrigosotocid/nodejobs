@@ -12,8 +12,6 @@ const empleosGetAll = async (req = request, res = response) => {
     const query = { estado: true };
     const ordenQuery = { fechaCreacion: orden };
 
-    console.log(ordenQuery);
-
     try {
         const [total, jobs] = await Promise.all([
             Job.countDocuments(query),
