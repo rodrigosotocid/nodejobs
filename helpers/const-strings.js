@@ -1,4 +1,15 @@
 
+
+//* ---- *//
+//* CRON *//
+//* ---- *//
+
+const CRON_CADA_5_MINUTOS = '*/2 * * * *';
+const CRON_CADA_4_HORAS = '0 0 */4 * * *';
+const CRON_CADA_7_DIAS = '0 0 0 */7 * *';
+
+
+
 //* --------- *//
 //* PUPPETEER *//
 //* --------- *//
@@ -26,5 +37,8 @@ module.exports = {
     URL_INFOEMPLEO,
     VIEWPORT,
     NAV_CONFIG,
-    PAGE_GOTO
+    PAGE_GOTO,
+    CRON_CADA_5_MINUTOS,
+    CRON_CADA_4_HORAS,
+    CRON_CADA_7_DIAS,
 }
