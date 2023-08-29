@@ -1,14 +1,19 @@
 const cron = require('node-cron');
-const { infoempleo } = require('./empleo-index');
+const { infoempleo, infoJobs } = require('./empleo-index');
 const { fechaHoraActual } = require('../helpers/date-format');
 
-
-// Tarea programada para ejecutar cada 6 horas
-const task = cron.schedule('0 0 */6 * * *', async () => {
+//*---------------------------------------------*/
+//* Tarea programada para ejecutar cada 4 horas
+//*---------------------------------------------*/
+const task = cron.schedule('0 0 */4 * * *', async () => {
     try {
         console.log('Ejecutando tarea programada...');
 
+        console.log('\n* Task App-01');
         await infoempleo();
+
+        console.log('\n* Task App-02');
+        await infoJobs();
 
 
         console.log(`* ${fechaHoraActual()} - Tarea ejecutada y almacenada en DB.`);

@@ -12,13 +12,13 @@ class Server {
 
         this.paths = {
             // auth: '/api/auth',
-            // buscar: '/api/buscar',
             // categorias: '/api/categorias',
             // productos: '/api/productos',
             // usuarios: '/api/usuarios',
             // uploads: '/api/uploads',
-            jobs: '/api/jobs',
             executejobs: '/api/executejobs',
+            jobs: '/api/jobs',
+            search: '/api/search',
         };
 
         // Conectar a la BD
@@ -61,8 +61,9 @@ class Server {
         // this.app.use(this.paths.productos, require('../routes/productos.routes'));
         // this.app.use(this.paths.usuarios, require('../routes/usuarios.routes'));
         // this.app.use(this.paths.uploads, require('../routes/uploads.routes'));
-        this.app.use(this.paths.jobs, require('../routes/jobs.routes'));
         this.app.use(this.paths.executejobs, require('../routes/executejobs.routes'));
+        this.app.use(this.paths.jobs, require('../routes/jobs.routes'));
+        this.app.use(this.paths.search, require('../routes/search.routes'));
     }
 
     listen() {
