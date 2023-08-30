@@ -1,5 +1,3 @@
-
-
 //* ---- *//
 //* CRON *//
 //* ---- *//
@@ -15,7 +13,9 @@ const CRON_CADA_7_DIAS = '0 0 0 */7 * *';
 //* --------- *//
 
 const URL_INFOEMPLEO = 'https://www.infoempleo.com/trabajo/';
-const URL_INFOJOBS = 'https://www.infojobs.com/ofertas-trabajo/';
+const URL_INFOJOBS = 'https://www.infojobs.net/jobsearch/search-results/list.xhtml';
+const URL_INDEED = 'https://es.indeed.com/jobs?q=&l=Espa%C3%B1a&from=searchOnHP&vjk=070dde3289936d3c';
+const URL_EMPLEATE = 'https://www.empleate.gob.es/empleo/#/trabajo?search=*&pag=0';
 
 const BROWSER_ARGS = {
     headless: 'new',
@@ -27,6 +27,8 @@ const VIEWPORT = { width: 1920, height: 1080 };
 const NAV_CONFIG = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 const PAGE_GOTO = [1000, { waitUntil: "domcontentloaded" }];
 
+const SIN_ESPECIFICAR = 'Sin especificar';
+
 
 
 
@@ -37,8 +39,11 @@ module.exports = {
     CRON_CADA_7_DIAS,
     URL_INFOEMPLEO,
     URL_INFOJOBS,
+    URL_INDEED,
+    URL_EMPLEATE,
     BROWSER_ARGS,
     VIEWPORT,
     NAV_CONFIG,
     PAGE_GOTO,
+    SIN_ESPECIFICAR,
 }

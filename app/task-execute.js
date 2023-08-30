@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const { infoempleo, infoJobs } = require('./empleo-index');
+const { infoempleo, empleate } = require('./empleo-index');
 const { fechaHoraActual } = require('../helpers/date-format');
 const { CRON_CADA_5_MINUTOS, CRON_CADA_7_DIAS, CRON_CADA_4_HORAS } = require('../helpers/const-strings');
 const { Job } = require('../models');
@@ -15,7 +15,7 @@ const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
         await infoempleo();
 
         console.log('\n* Task App-02');
-        await infoJobs();
+        await empleate();
 
         console.log(`* ${fechaHoraActual()} - Tarea ejecutada y almacenada en DB.`);
     } catch (error) {
