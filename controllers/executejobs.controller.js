@@ -7,10 +7,10 @@ const { infoempleo, empleate, infoJobs, indeed, } = require('../app/empleo-index
 const executeJobs = async (req = request, res = response) => {
 
     try {
-        console.log('\n* Task App-01 - Controller');
+        console.log('\n** Task App-01 - Controller');
         await infoempleo();
 
-        console.log('\n* Task App-02 - empleate');
+        console.log('\n** Task App-02 - Controller');
         await empleate();
 
 

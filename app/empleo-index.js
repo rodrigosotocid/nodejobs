@@ -2,10 +2,9 @@ require('dotenv').config();
 const puppeteer = require('puppeteer');
 const Job = require('../models/job');
 const { saveJobs } = require('./save-jobs');
-const { dbConnection } = require('../database/config');
-const { URL_INFOEMPLEO, VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO, URL_INFOJOBS, URL_INDEED, URL_EMPLEATE, SIN_ESPECIFICAR } = require('../helpers/const-strings');
 
-// dbConnection();
+const { URL_INFOEMPLEO, VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO, URL_INFOJOBS, URL_INDEED, URL_EMPLEATE } = require('../helpers/const-strings');
+
 
 //*----------------*//
 //* 1 - INFOEMPLEO *//
@@ -95,6 +94,7 @@ const empleate = async () => {
         const page = await browser.newPage();
         await page.setUserAgent(NAV_CONFIG);
         await page.setViewport(VIEWPORT);
+
         const response = await page.goto(URL_EMPLEATE, PAGE_GOTO);
         console.log(`- Status code: ${response.status()}`);
 
@@ -105,7 +105,6 @@ const empleate = async () => {
 
             for (const element of elements) {
                 const link = element.querySelector('div p a')?.href ?? null;
-                // alert(link);
                 if (link !== null) links.push(link);
             }
             return links;

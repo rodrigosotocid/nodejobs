@@ -8,7 +8,7 @@ const dbConnection = async () => {
             useUnifiedTopology: true
         });
 
-        console.log('** Base de datos online **');
+        console.log('*-* Base de datos online *-*');
 
     } catch (error) {
         console.log(error);

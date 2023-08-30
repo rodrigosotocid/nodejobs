@@ -27,8 +27,6 @@ const VIEWPORT = { width: 1920, height: 1080 };
 const NAV_CONFIG = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 const PAGE_GOTO = [1000, { waitUntil: "domcontentloaded" }];
 
-const SIN_ESPECIFICAR = 'Sin especificar';
-
 
 
 
@@ -45,5 +43,4 @@ module.exports = {
     VIEWPORT,
     NAV_CONFIG,
     PAGE_GOTO,
-    SIN_ESPECIFICAR,
 }

@@ -1,7 +1,6 @@
 const express = require('express')
 const cors = require('cors');
 const { dbConnection } = require('../database/config');
-// const fileUpload = require('express-fileupload');
 
 
 class Server {
@@ -44,13 +43,6 @@ class Server {
 
         // Directorio público
         this.app.use(express.static('public'));
-
-        // FileUpload - Carga de archivos
-        // this.app.use(fileUpload({
-        //     useTempFiles: true,
-        //     tempFileDir: '/tmp/',
-        //     createParentPath: true,
-        // }));
     }
 
     // Método
@@ -68,7 +60,7 @@ class Server {
 
     listen() {
         this.app.listen(this.port, () => {
-            console.log(`** Servidor corriendo en puerto: ${this.port} **`);
+            console.log(`*-* Servidor corriendo en puerto: ${this.port} *-*`);
         })
     }
 }
