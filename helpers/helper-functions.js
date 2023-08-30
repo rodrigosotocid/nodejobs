@@ -9,6 +9,14 @@ const fechaHoraActual = () => {
 }// Formatear la fecha a formato español}
 
 
+const delay = (time) => {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, time)
+    });
+}
+
+
 module.exports = {
-    fechaHoraActual
+    fechaHoraActual,
+    delay
 }

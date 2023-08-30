@@ -8,11 +8,12 @@ const executeJobs = async (req = request, res = response) => {
 
     try {
         console.log('\n** Task App-01 - Controller');
-        await infoempleo();
+        // await infoempleo();
 
         console.log('\n** Task App-02 - Controller');
         await empleate();
 
+        console.log('\n** Task App-03 - Controller');
 
 
         res.status(200).json({

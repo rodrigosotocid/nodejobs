@@ -3,7 +3,8 @@ const puppeteer = require('puppeteer');
 const Job = require('../models/job');
 const { saveJobs } = require('./save-jobs');
 
-const { URL_INFOEMPLEO, VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO, URL_INFOJOBS, URL_INDEED, URL_EMPLEATE } = require('../helpers/const-strings');
+const { URL_INFOEMPLEO, VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO, URL_INFOJOBS, URL_INDEED, URL_EMPLEATE, URL_EMPLEATE_PAG2 } = require('../helpers/const-strings');
+const { delay } = require('../helpers/helper-functions');
 
 
 //*----------------*//
@@ -11,8 +12,10 @@ const { URL_INFOEMPLEO, VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO, URL_INFOJ
 //*----------------*//
 
 const infoempleo = async () => {
+    console.log('- Init App_01...');
+
     try {
-        console.log('- Init App_01...');
+        const todasLasOfertas = [];
         const browser = await puppeteer.launch(BROWSER_ARGS);
         const page = await browser.newPage();
         await page.setUserAgent(NAV_CONFIG);
@@ -36,7 +39,7 @@ const infoempleo = async () => {
             }
             return links;
         });
-        const todasLasOfertas = [];
+        console.log(`- Total: <<${enlaces.length} enlaces>>`);
 
         for (const enlace of enlaces) {
 
@@ -66,6 +69,7 @@ const infoempleo = async () => {
                 job.contrato = document.querySelector('div.offer-excerpt>ul:nth-child(4)>li:nth-child(1)>p')?.innerText;
                 job.localidad = document.querySelector('.block')?.innerText;
                 job.localidad = job.localidad.trimStart();
+                job.pais = 'España';
 
                 return job;
             });
@@ -81,24 +85,32 @@ const infoempleo = async () => {
     } catch (error) {
         console.log('*** Error inesperado en App_01 ***', error.message);
     }
-    console.log('End App_01');
+    console.log('- End App_01');
 }
 
-//*------------------*//
+//*--------------*//
 //* 2 - EMPLEATE *//
-//*------------------*//
+//*--------------*//
 const empleate = async () => {
     console.log('- Init App_02...');
     try {
+        const todasLasOfertas = [];
         const browser = await puppeteer.launch(BROWSER_ARGS);
+        // const browser = await puppeteer.launch({ headless: false });
         const page = await browser.newPage();
         await page.setUserAgent(NAV_CONFIG);
         await page.setViewport(VIEWPORT);
 
-        const response = await page.goto(URL_EMPLEATE, PAGE_GOTO);
+        const response = await page.goto(URL_EMPLEATE, [5000, { waitUntil: "domcontentloaded" }]);
         console.log(`- Status code: ${response.status()}`);
 
-        //* page evaluate
+        //* selecciona cantidad de ofertas por página
+        await page.select('#pagesizeinput', '100');
+        console.log('- before waiting 3 seconds');
+        await delay(3000);
+        console.log('- after waiting 3 seconds');
+
+        //* Obteniendo enlaces de la página
         const enlaces = await page.evaluate(() => {
             const links = [];
             const elements = document.querySelectorAll('.animated-fast.fadeIn.ng-scope');
@@ -109,8 +121,9 @@ const empleate = async () => {
             }
             return links;
         });
-        const todasLasOfertas = [];
+        console.log(`- Total: <<${enlaces.length} links>>`);
 
+        //* Recorriendo cada uno de los enlaces
         for (const enlace of enlaces) {
 
             await page.goto(enlace, PAGE_GOTO);
@@ -145,9 +158,11 @@ const empleate = async () => {
 
             jobs.url = enlace ?? '';
             const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
-            if (jobs.titulo != null && !existeTitulo && jobs.titulo != '') todasLasOfertas.push(jobs);
+            if (jobs.titulo != null && jobs.titulo != '' && !existeTitulo) {
+                todasLasOfertas.push(jobs);
+            }
         }
-        console.log(`- Total a guardar: <<${todasLasOfertas.length} items>>`);
+        console.log(`- Total: <<${todasLasOfertas.length} items>>`);
         if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
 
         await browser.close();
@@ -155,14 +170,18 @@ const empleate = async () => {
     } catch (error) {
         console.log(`*** Error App_02 *** ${error.message}`);
     }
+    console.log('- End App_02');
 }
 
-//************//
+
+
+//*--------*//
 //* INDEED *//
-//************//
+//*--------*//
 
 const indeed = async () => {
     console.log('- Init App_03...');
+    const todasLasOfertas = [];
 
     try {
         const browser = await puppeteer.launch({ headless: false });
@@ -185,7 +204,7 @@ const indeed = async () => {
             }
             return links;
         });
-        const todasLasOfertas = [];
+
 
         for (const enlace of enlaces) {
 
@@ -233,9 +252,9 @@ const indeed = async () => {
     }
 }
 
-//************/
+//*----------*//
 //* INFOJOBS */
-//************/
+//*----------*//
 const infoJobs = async () => {
     console.log('- Init App_02...');
 

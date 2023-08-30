@@ -4,7 +4,7 @@ const Job = require('../models/job');
 const saveJobs = async (jobsArray) => {
     try {
         const result = await Job.insertMany(jobsArray);
-        console.log('Jobs executed!');
+        console.log('- saveJobs executed!');
 
         return result;
 
