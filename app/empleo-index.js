@@ -103,6 +103,7 @@ const empleate = async () => {
 
         const response = await page.goto(URL_EMPLEATE, [5000, { waitUntil: "domcontentloaded" }]);
         console.log(`- Status code: ${response.status()}`);
+        await delay(3000);
 
         //* selecciona cantidad de ofertas por página
         await page.select('#pagesizeinput', '100');
