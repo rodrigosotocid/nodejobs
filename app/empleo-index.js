@@ -174,8 +174,11 @@ const empleate = async () => {
 
                 return job;
             });
-            console.log('** A **');
             console.log(`jobs.titulo: ${jobs?.titulo}`);
+            console.log(`jobs.empresa: ${jobs?.empresa}`);
+            console.log(`enlace: ${jobs?.enlace}`);
+            console.log('** A **');
+
             if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
             console.log('** B **');
             jobs.url = enlace ?? '';
