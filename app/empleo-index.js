@@ -140,6 +140,7 @@ const empleate = async () => {
             }
             return links;
         });
+        console.log(`- <<${enlaces[0]}>>`);
         console.log(`- <<${enlaces.length} links retrieves>>`);
 
         //* Recorriendo cada uno de los enlaces
