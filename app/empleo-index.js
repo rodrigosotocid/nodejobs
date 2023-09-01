@@ -104,10 +104,15 @@ const empleate = async () => {
         await context.overridePermissions(URL_EMPLEATE, ['geolocation']);
 
         const page = await browser.newPage();
+
+        // Configurar la geolocalización a null
+        await page.setGeolocation({ latitude: null, longitude: null });
+
         await page.setUserAgent(NAV_CONFIG);
         await page.setViewport(VIEWPORT);
 
-        // Escuchar el evento dialog y descartarlo (dismiss)
+
+        //* Escuchar el evento dialog y descartarlo (dismiss)
         page.on('dialog', async dialog => {
             console.log(`Se encontró un diálogo: ${dialog.message()}`);
             await dialog.dismiss();
@@ -119,9 +124,10 @@ const empleate = async () => {
 
         //* selecciona cantidad de ofertas por página
         const pagesizeinput = await page.select('#pagesizeinput', '100');
-        console.log('- before waiting 3 seconds: ', pagesizeinput);
+        console.log('- before waiting 5 seconds: ', pagesizeinput);
         await delay(5000);
-        console.log('- after waiting 3 seconds');
+        console.log('- after waiting 5 seconds');
+
 
         //* Obteniendo enlaces de la página
         const enlaces = await page.evaluate(() => {
@@ -134,7 +140,7 @@ const empleate = async () => {
             }
             return links;
         });
-        console.log(`- <<${enlaces.length} links recuperados>>`);
+        console.log(`- <<${enlaces.length} links retrieves>>`);
 
         //* Recorriendo cada uno de los enlaces
         for (const enlace of enlaces) {
@@ -168,14 +174,11 @@ const empleate = async () => {
 
                 return job;
             });
-
-            // Verificar si job.titulo es nulo o una cadena vacía, si es así, saltar al siguiente elemento en el bucle
             if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
-
             jobs.url = enlace ?? '';
-            const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
 
-            // console.log(jobs.titulo.substring(0, 10));
+            const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
+            console.log(jobs.titulo.substring(0, 10));
 
             if (jobs.titulo != null && jobs.titulo != '' && !existeTitulo) {
                 // console.log(jobs.titulo.substring(0, 10));
@@ -183,13 +186,13 @@ const empleate = async () => {
                 todasLasOfertas.push(jobs);
             }
         }
-        console.log(`- Total: <<${todasLasOfertas.length} items adds>>`);
+        console.log(`- <<${todasLasOfertas.length} items adds>>`);
         if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
 
         await browser.close();
 
     } catch (error) {
-        console.log(`*** Error App_02 *** ${error.message}`);
+        console.log(`*** Error Task 02 *** ${error.message}`);
     }
     console.log('- End Task 02');
 }
