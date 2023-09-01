@@ -11,10 +11,10 @@ const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
     console.log('Ejecutando tarea programada...');
 
     try {
-        console.log('\n** Task App-01');
+        console.log('\n** Task 01');
         await infoempleo();
 
-        console.log('\n** Task App-02');
+        console.log('\n** Task 02');
         await empleate();
 
         console.log(`* ${fechaHoraActual()} - Tarea ejecutada y almacenada en DB.`);

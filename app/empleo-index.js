@@ -12,7 +12,7 @@ const { delay } = require('../helpers/helper-functions');
 //*----------------*//
 
 const infoempleo = async () => {
-    console.log('- Init App_01...');
+    console.log('- Init...');
 
     try {
         const todasLasOfertas = [];
@@ -22,7 +22,7 @@ const infoempleo = async () => {
         await page.setViewport(VIEWPORT);
 
         const response = await page.goto(URL_INFOEMPLEO, PAGE_GOTO);
-        console.log(`- Status code: ${response.status()}`);
+        console.log(`- Status ${response.status()}`);
 
         await page.waitForSelector('#onetrust-accept-btn-handler');
         await page.click('#onetrust-accept-btn-handler');
@@ -39,7 +39,7 @@ const infoempleo = async () => {
             }
             return links;
         });
-        console.log(`- Total: <<${enlaces.length} enlaces>>`);
+        console.log(`- <<${enlaces.length} enlaces recuperados>>`);
 
         for (const enlace of enlaces) {
 
@@ -86,30 +86,41 @@ const infoempleo = async () => {
     } catch (error) {
         console.log('*** Error inesperado en App_01 ***', error.message);
     }
-    console.log('- End App_01');
+    console.log('- End Task 01');
 }
 
 //*--------------*//
 //* 2 - EMPLEATE *//
 //*--------------*//
 const empleate = async () => {
-    console.log('- Init App_02...');
+    console.log('- Init...');
     try {
         const todasLasOfertas = [];
         const browser = await puppeteer.launch(BROWSER_ARGS);
         // const browser = await puppeteer.launch({ headless: false });
+
+        const context = browser.defaultBrowserContext();
+        // Anular permisos para la ubicación geográfica
+        await context.overridePermissions(URL_EMPLEATE, ['geolocation']);
+
         const page = await browser.newPage();
         await page.setUserAgent(NAV_CONFIG);
         await page.setViewport(VIEWPORT);
 
+        // Escuchar el evento dialog y descartarlo (dismiss)
+        page.on('dialog', async dialog => {
+            console.log(`Se encontró un diálogo: ${dialog.message()}`);
+            await dialog.dismiss();
+        });
+
         const response = await page.goto(URL_EMPLEATE, [5000, { waitUntil: "domcontentloaded" }]);
-        console.log(`- Status code: ${response.status()}`);
+        console.log(`- Status ${response.status()}`);
         await delay(3000);
 
         //* selecciona cantidad de ofertas por página
-        await page.select('#pagesizeinput', '100');
-        console.log('- before waiting 3 seconds');
-        await delay(3000);
+        const pagesizeinput = await page.select('#pagesizeinput', '100');
+        console.log('- before waiting 3 seconds: ', pagesizeinput);
+        await delay(5000);
         console.log('- after waiting 3 seconds');
 
         //* Obteniendo enlaces de la página
@@ -123,7 +134,7 @@ const empleate = async () => {
             }
             return links;
         });
-        console.log(`- Total: <<${enlaces.length} links>>`);
+        console.log(`- <<${enlaces.length} links recuperados>>`);
 
         //* Recorriendo cada uno de los enlaces
         for (const enlace of enlaces) {
@@ -164,7 +175,7 @@ const empleate = async () => {
             jobs.url = enlace ?? '';
             const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
 
-            console.log(jobs.titulo.substring(0, 10));
+            // console.log(jobs.titulo.substring(0, 10));
 
             if (jobs.titulo != null && jobs.titulo != '' && !existeTitulo) {
                 // console.log(jobs.titulo.substring(0, 10));
@@ -172,7 +183,7 @@ const empleate = async () => {
                 todasLasOfertas.push(jobs);
             }
         }
-        console.log(`- Total: <<${todasLasOfertas.length} items>>`);
+        console.log(`- Total: <<${todasLasOfertas.length} items adds>>`);
         if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
 
         await browser.close();
@@ -180,7 +191,7 @@ const empleate = async () => {
     } catch (error) {
         console.log(`*** Error App_02 *** ${error.message}`);
     }
-    console.log('- End App_02');
+    console.log('- End Task 02');
 }
 
 
