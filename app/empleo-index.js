@@ -144,10 +144,10 @@ const empleate = async () => {
 
         //* Recorriendo cada uno de los enlaces
         for (const enlace of enlaces) {
-            console.log('** 1 **');
+
             await page.goto(enlace);
             await page.waitForSelector('#tituloOferta');
-            console.log('** 2 **');
+
             const jobs = await page.evaluate(() => {
                 const job = {};
                 const CSS_BASE = '#toTop > section.row.margin-top-20.wrap-white.margin-5 >';
@@ -174,15 +174,16 @@ const empleate = async () => {
 
                 return job;
             });
-            console.log('** 3 **');
-            if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
-            jobs.url = enlace ?? '';
-            console.log('** 4 **');
-            const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
+            console.log('** A **');
             console.log(jobs.titulo.substring(0, 10));
+            if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
+            console.log('** B **');
+            jobs.url = enlace ?? '';
+            console.log('** C **');
+            const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
+            console.log('** D **');
 
             if (jobs.titulo != null && jobs.titulo != '' && !existeTitulo) {
-                // console.log(jobs.titulo.substring(0, 10));
                 console.log('** INSERT OK **');
                 todasLasOfertas.push(jobs);
             }
