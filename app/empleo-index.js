@@ -3,8 +3,8 @@ const puppeteer = require('puppeteer');
 const Job = require('../models/job');
 const { saveJobs } = require('./save-jobs');
 
-const { URL_INFOEMPLEO, VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO, URL_INFOJOBS, URL_INDEED, URL_EMPLEATE, URL_EMPLEATE_PAG2 } = require('../helpers/const-strings');
-const { delay } = require('../helpers/helper-functions');
+const { URL_INFOEMPLEO, VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO, URL_INFOJOBS, URL_INDEED, URL_EMPLEATE, } = require('../helpers/constantes');
+const { delay } = require('../helpers/funciones');
 
 
 //*----------------*//
@@ -142,7 +142,7 @@ const empleate = async () => {
         for (const enlace of enlaces) {
             await page.goto(enlace, PAGE_GOTO);
             await page.waitForSelector('#tituloOferta');
-            await delay(2000);
+            await delay(3000);
 
             const jobs = await page.evaluate(() => {
                 const job = {};
@@ -193,7 +193,12 @@ const empleate = async () => {
     console.log('- End Task 02');
 }
 
-
+/*
+ * Para refactorizar con nuevo archivo
+    await infoempleo();
+    await empleate();
+    await indeed();
+ */
 
 //*--------*//
 //* INDEED *//

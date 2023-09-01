@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const { infoempleo, empleate } = require('./empleo-index');
-const { fechaHoraActual } = require('../helpers/helper-functions');
-const { CRON_CADA_5_MINUTOS, CRON_CADA_7_DIAS, CRON_CADA_4_HORAS } = require('../helpers/const-strings');
+const { fechaHoraActual } = require('../helpers/funciones');
+const { CRON_CADA_5_MINUTOS, CRON_CADA_7_DIAS, CRON_CADA_4_HORAS } = require('../helpers/constantes');
 const { Job } = require('../models');
 
 //*---------------------------------------------*/
