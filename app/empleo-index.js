@@ -142,7 +142,7 @@ const empleate = async () => {
         for (const enlace of enlaces) {
             await page.goto(enlace, PAGE_GOTO);
             await page.waitForSelector('#tituloOferta');
-            await delay(3000);
+            await delay(2000);
 
             const jobs = await page.evaluate(() => {
                 const job = {};
