@@ -104,10 +104,6 @@ const empleate = async () => {
         await context.overridePermissions(URL_EMPLEATE, ['geolocation']);
 
         const page = await browser.newPage();
-
-        // Configurar la geolocalización a null
-        // await page.setGeolocation({ latitude: null, longitude: null });
-
         await page.setUserAgent(NAV_CONFIG);
         await page.setViewport(VIEWPORT);
 
@@ -140,7 +136,6 @@ const empleate = async () => {
             }
             return links;
         });
-        console.log(`- <<${enlaces[0]}>>`);
         console.log(`- <<${enlaces.length} links retrieves>>`);
 
         //* Recorriendo cada uno de los enlaces
@@ -149,15 +144,11 @@ const empleate = async () => {
 
             await page.goto(enlace, PAGE_GOTO);
             await page.waitForSelector('#tituloOferta');
-
-            page.on('console', message => {
-                console.log(`Desde la página: ${message.text()}`);
-            });
+            await delay(3000);
 
             const jobs = await page.evaluate(() => {
                 const job = {};
                 const CSS_BASE = '#toTop > section.row.margin-top-20.wrap-white.margin-5 >';
-                console.log('Este mensaje es de dentro de page.evaluate()');
 
                 job.titulo = document.querySelector('#tituloOferta')?.innerText;
                 job.empresa = document.querySelector('h2.clickable.texto-13.display-inline-imp.ng-binding')?.innerText;
@@ -181,17 +172,13 @@ const empleate = async () => {
 
                 return job;
             });
-            console.log(`jobs.titulo: ${jobs?.titulo}`);
-            console.log(`jobs.empresa: ${jobs?.empresa}`);
-            // console.log(`enlace_2: ${enlace}`);
-            console.log('** A **');
 
-            if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
-            console.log('** B **');
+            if (jobs.titulo == null || jobs.titulo.trim() === '') {
+                continue;
+            }
+
             jobs.url = enlace ?? '';
-            console.log('** C **');
             const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
-            console.log('** D **');
 
             if (jobs.titulo != null && jobs.titulo != '' && !existeTitulo) {
                 console.log('** INSERT OK **');
@@ -202,9 +189,8 @@ const empleate = async () => {
         if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
 
         await browser.close();
-
     } catch (error) {
-        console.log(`*** Error Task 02 *** ${error.message}`);
+        console.error(`*** Error Task 02 *** ${error.message}`);
     }
     console.log('- End Task 02');
 }
