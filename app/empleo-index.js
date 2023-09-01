@@ -106,7 +106,7 @@ const empleate = async () => {
         const page = await browser.newPage();
 
         // Configurar la geolocalización a null
-        await page.setGeolocation({ latitude: null, longitude: null });
+        // await page.setGeolocation({ latitude: null, longitude: null });
 
         await page.setUserAgent(NAV_CONFIG);
         await page.setViewport(VIEWPORT);
@@ -314,7 +314,7 @@ const infoJobs = async () => {
 
 module.exports = {
     infoempleo,
+    empleate,
     infoJobs,
     indeed,
-    empleate,
 }
