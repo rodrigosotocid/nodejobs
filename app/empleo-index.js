@@ -145,8 +145,9 @@ const empleate = async () => {
 
         //* Recorriendo cada uno de los enlaces
         for (const enlace of enlaces) {
+            console.log(`enlace: ${enlace}`);
 
-            await page.goto(enlace);
+            await page.goto(enlace, PAGE_GOTO);
             await page.waitForSelector('#tituloOferta');
 
             const jobs = await page.evaluate(() => {
@@ -177,7 +178,7 @@ const empleate = async () => {
             });
             console.log(`jobs.titulo: ${jobs?.titulo}`);
             console.log(`jobs.empresa: ${jobs?.empresa}`);
-            console.log(`enlace: ${jobs?.enlace}`);
+            console.log(`enlace_2: ${enlace}`);
             console.log('** A **');
 
             if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
