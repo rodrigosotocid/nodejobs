@@ -150,12 +150,17 @@ const empleate = async () => {
             await page.goto(enlace, PAGE_GOTO);
             await page.waitForSelector('#tituloOferta');
 
+            page.on('console', message => {
+                console.log(`Desde la página: ${message.text()}`);
+            });
+
             const jobs = await page.evaluate(() => {
                 const job = {};
                 const CSS_BASE = '#toTop > section.row.margin-top-20.wrap-white.margin-5 >';
+                console.log('Este mensaje es de dentro de page.evaluate()');
 
                 job.titulo = document.querySelector('#tituloOferta')?.innerText;
-                job.empresa = document.querySelector('h2.clickable.texto-13.display-inline-imp.ng-binding')?.innerText ?? '';
+                job.empresa = document.querySelector('h2.clickable.texto-13.display-inline-imp.ng-binding')?.innerText;
                 job.fechaCreacion = Date.now();
                 job.url = '';
                 job.fuente = 'Empleate';
@@ -178,7 +183,7 @@ const empleate = async () => {
             });
             console.log(`jobs.titulo: ${jobs?.titulo}`);
             console.log(`jobs.empresa: ${jobs?.empresa}`);
-            console.log(`enlace_2: ${enlace}`);
+            // console.log(`enlace_2: ${enlace}`);
             console.log('** A **');
 
             if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
