@@ -15,7 +15,7 @@ const JobSchema = Schema({
     categoria: { type: String, default: 'Sin especificar', },
     subcategoria: { type: String, default: 'Sin especificar', },
     descripcion: { type: String, default: 'Sin especificar', },
-    fechaPublicación: { type: String, default: 'Sin especificar', },
+    fechaPublicacion: { type: String, default: 'Sin especificar', },
     vacantes: { type: String, default: 'Sin especificar', },
     inscritos: { type: String, default: 'Sin especificar', },
     logo: { type: String, default: 'Sin especificar', },

@@ -60,8 +60,8 @@ const infoempleo = async () => {
                 job.descripcion = document.querySelector('.offer')?.innerHTML;
                 job.descripcion = job.descripcion.replace(/\sclass="[^"]*"/g, '').replace(/<pre>/g, '<p>').replace(/<\/pre>/g, '</p>');
                 // job.descripcion = job.descripcion.replace(/<\/?[^>]+(>|$)/g, "");
-                job.fechaPublicación = document.querySelector('.mt10')?.innerText;
-                job.fechaPublicación = job.fechaPublicación.trimStart();
+                job.fechaPublicacion = document.querySelector('.mt10')?.innerText;
+                job.fechaPublicacion = job.fechaPublicacion.trimStart();
                 job.vacantes = document.querySelector('div.offer-excerpt>ul:nth-child(3)>li:nth-child(1)>p')?.innerText;
                 job.inscritos = document.querySelector('div.offer-excerpt>ul:nth-child(3)>li:nth-child(2)>p')?.innerText;
                 job.logo = 'https://res.cloudinary.com/dsidiwm77/image/upload/v1692266273/jobLogo/wmpyazfwjubrhtxrh0ud.svg';
@@ -73,6 +73,7 @@ const infoempleo = async () => {
 
                 return job;
             });
+            if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
 
             jobs.url = enlace ?? '';
             const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
@@ -146,7 +147,7 @@ const empleate = async () => {
                 job.descripcion = document.querySelector(`${CSS_BASE} section.col-md-7.margin-left-15.margin-right-15 > div.row.texto-16.justify-text.margin-top-15`)?.innerHTML;
                 job.descripcion = job.descripcion.replace(/\sclass="[^"]*"/g, '').replace(/<pre>/g, '<p>').replace(/<\/pre>/g, '</p>');
                 job.descripcion = job.descripcion.trimStart();
-                job.fechaPublicación = document.querySelector(`${CSS_BASE} section.col-md-7.margin-left-15.margin-right-15 > div:nth-child(2) > div.col-md-9.col-xs-12 > div.row.margin-top-15.text-center-sm.text-center-xs > div:nth-child(2) > span.ng-binding`)?.innerText;
+                job.fechaPublicacion = document.querySelector(`${CSS_BASE} section.col-md-7.margin-left-15.margin-right-15 > div:nth-child(2) > div.col-md-9.col-xs-12 > div.row.margin-top-15.text-center-sm.text-center-xs > div:nth-child(2) > span.ng-binding`)?.innerText;
                 job.vacantes = document.querySelector(`${CSS_BASE} section:nth-child(6) > div > div:nth-child(2) > span.ng-binding`)?.innerText;
                 job.logo = 'https://res.cloudinary.com/dsidiwm77/image/upload/v1693396121/jobLogo/xstogxuihgni7uc18r9n.png';
                 job.area = job.categoria;
@@ -157,9 +158,17 @@ const empleate = async () => {
                 return job;
             });
 
+            // Verificar si job.titulo es nulo o una cadena vacía, si es así, saltar al siguiente elemento en el bucle
+            if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
+
             jobs.url = enlace ?? '';
             const existeTitulo = await Job.findOne({ titulo: jobs.titulo });
+
+            console.log(jobs.titulo.substring(0, 10));
+
             if (jobs.titulo != null && jobs.titulo != '' && !existeTitulo) {
+                // console.log(jobs.titulo.substring(0, 10));
+                console.log('** INSERT OK **');
                 todasLasOfertas.push(jobs);
             }
         }
@@ -227,8 +236,8 @@ const indeed = async () => {
                 // job.descripcion = document.querySelector('.offer')?.innerHTML;
                 // job.descripcion = job.descripcion.replace(/\sclass="[^"]*"/g, '').replace(/<pre>/g, '<p>').replace(/<\/pre>/g, '</p>');
                 // job.descripcion = job.descripcion.replace(/<\/?[^>]+(>|$)/g, "");
-                // job.fechaPublicación = document.querySelector('.mt10')?.innerText;
-                // job.fechaPublicación = job.fechaPublicación.trimStart();
+                // job.fechaPublicacion = document.querySelector('.mt10')?.innerText;
+                // job.fechaPublicacion = job.fechaPublicacion.trimStart();
                 // job.vacantes = document.querySelector('div.offer-excerpt>ul:nth-child(3)>li:nth-child(1)>p')?.innerText;
                 // job.inscritos = document.querySelector('div.offer-excerpt>ul:nth-child(3)>li:nth-child(2)>p')?.innerText;
                 job.logo = 'https://res.cloudinary.com/dsidiwm77/image/upload/v1692266273/jobLogo/wmpyazfwjubrhtxrh0ud.svg';
