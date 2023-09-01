@@ -120,9 +120,9 @@ const empleate = async () => {
 
         //* selecciona cantidad de ofertas por página
         const pagesizeinput = await page.select('#pagesizeinput', '100');
-        console.log('- before waiting 5 seconds: ', pagesizeinput);
-        await delay(5000);
-        console.log('- after waiting 5 seconds');
+        console.log('- before waiting 3 seconds: ', pagesizeinput);
+        await delay(3000);
+        console.log('- after waiting 3 seconds');
 
 
         //* Obteniendo enlaces de la página
@@ -140,11 +140,9 @@ const empleate = async () => {
 
         //* Recorriendo cada uno de los enlaces
         for (const enlace of enlaces) {
-            console.log(`enlace: ${enlace}`);
-
             await page.goto(enlace, PAGE_GOTO);
             await page.waitForSelector('#tituloOferta');
-            await delay(3000);
+            await delay(2000);
 
             const jobs = await page.evaluate(() => {
                 const job = {};
