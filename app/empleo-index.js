@@ -175,7 +175,7 @@ const empleate = async () => {
                 return job;
             });
             console.log('** A **');
-            console.log(jobs.titulo.substring(0, 10));
+            console.log(`jobs.titulo: ${jobs?.titulo}`);
             if (jobs.titulo == null || jobs.titulo.trim() === '') continue;
             console.log('** B **');
             jobs.url = enlace ?? '';
