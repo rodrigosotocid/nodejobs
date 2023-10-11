@@ -5,33 +5,35 @@ const { fechaHoraActual } = require('../helpers/funciones');
 const {
     CRON_CADA_1_MINUTO,
     CRON_CADA_5_MINUTOS,
-    CRON_CADA_7_DIAS,
+    CRON_CADA_3_HORAS,
     CRON_CADA_4_HORAS,
-    URL_WP_CRON
+    CRON_CADA_7_DIAS,
+    URL_WP_CRON,
+    URL_WP_POST_CREATE
 } = require('../helpers/constantes');
 const { Job } = require('../models');
+const { sendJobsPostToWP } = require('../controllers/executejobs.controller');
 
 //*---------------------------------------------*/
 //* Tarea programada para ejecutar cada 4 horas
 //*---------------------------------------------*/
-const task = cron.schedule(CRON_CADA_1_MINUTO, async () => {
+const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
     console.log('\n[task] - Ejecutando tarea programada...');
 
     try {
-        console.log('[task] - Task 01');
-        await obtenerInfoempleo();
+        // console.log('[task] - Task 01');
+        // await obtenerInfoempleo();
 
-        console.log('[task] - Task 02');
-        await obtenerEmpleate();
+        // console.log('[task] - Task 02');
+        // await obtenerEmpleate();
 
-        console.log('[task] - Task 03');
-        await obtenerIndeed();
+        // console.log('[task] - Task 03');
+        // await obtenerIndeed();
 
-        // console.log('** Task - Ejecutando endpoint WP-CRON');
-        // await executeTaskWordPressCron();
+        console.log('[task] - Ejecutando endpoint WP-CRON');
+        await sendJobsPostToWP();
 
         console.log(`[task] - Tarea ejecutada y almacenada en la BD el ${fechaHoraActual()}.`);
-        return;
     } catch (error) {
         console.error('[task] - Error al guardar el elemento:', error);
     }
@@ -64,25 +66,26 @@ const taskDeleteJob = cron.schedule(CRON_CADA_7_DIAS, async () => {
 });  // Fin de la tarea programada
 
 
-// const executeControllerWPCron = async () => {
-//     console.log('** executeTaskWordPressCron **');
-//     try {
-//         await axios.get('http://localhost:8080/api/ejecutar-wp-cron')
-//             .then(response => {
-//                 console.log(response.data);
-//             }).catch(error => {
-//                 console.error(error);
-//             });
+//*-------------------------------------------------------*/
+//* Programa la ejecución cada 3 horas (cada 180 minutos) */
+//*-------------------------------------------------------*/
 
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
+const taskCreaPostWP = cron.schedule(CRON_CADA_3_HORAS, async () => {
+    console.log('\n[taskCreaPostWP] - Ejecutando tarea programada...');
+    try {
+        const response = await axios.get(URL_WP_POST_CREATE);
+        console.log(`[taskCreaPostWP] - Status Task ${response.statusText}`);
+    } catch (error) {
+        console.error('[taskCreaPostWP] - Error en tarea programada:', error);
+    }
+    console.log(`[taskCreaPostWP] - FIN tarea programada... ${fechaHoraActual()}.`);
+});
+
 
 
 
 module.exports = {
     task,
     taskDeleteJob,
-    // executeControllerWPCron
+    taskCreaPostWP,
 }
