@@ -9,7 +9,7 @@ module.exports = {
     URL_EMPLEATE: 'https://www.empleate.gob.es/empleo/#/trabajo?search=*&pag=0',
     URL_INFOJOBS: 'https://www.infojobs.net/jobsearch/search-results/list.xhtml',
     URL_INDEED: 'https://es.indeed.com/jobs?q=&l=Espa%C3%B1a&from=searchOnHP&vjk=070dde3289936d3c',
-    BROWSER_ARGS: { headless: false, ignoreDefaultArgs: ['--disable-extensions'], args: ['--no-sandbox', '--disable-setuid-sandbox'], },
+    BROWSER_ARGS: { headless: 'new', ignoreDefaultArgs: ['--disable-extensions'], args: ['--no-sandbox', '--disable-setuid-sandbox'], },
     VIEWPORT: { width: 1920, height: 1080 },
     NAV_CONFIG: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36',
     PAGE_GOTO: [1000, { waitUntil: "domcontentloaded" }],
