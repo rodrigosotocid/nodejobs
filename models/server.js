@@ -15,7 +15,7 @@ class Server {
             // productos: '/api/productos',
             // usuarios: '/api/usuarios',
             // uploads: '/api/uploads',
-            executejobs: '/api/executejobs',
+            executejobs: '/api',
             jobs: '/api/jobs',
             search: '/api/search',
         };
