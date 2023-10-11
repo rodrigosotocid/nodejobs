@@ -21,17 +21,14 @@ const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
     console.log('\n[task] - Ejecutando tarea programada...');
 
     try {
-        // console.log('[task] - Task 01');
-        // await obtenerInfoempleo();
+        console.log('[task] - Task 01');
+        await obtenerInfoempleo();
 
-        // console.log('[task] - Task 02');
-        // await obtenerEmpleate();
+        console.log('[task] - Task 02');
+        await obtenerEmpleate();
 
         // console.log('[task] - Task 03');
         // await obtenerIndeed();
-
-        console.log('[task] - Ejecutando endpoint WP-CRON');
-        await sendJobsPostToWP();
 
         console.log(`[task] - Tarea ejecutada y almacenada en la BD el ${fechaHoraActual()}.`);
     } catch (error) {
