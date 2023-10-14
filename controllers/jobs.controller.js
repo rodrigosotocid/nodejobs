@@ -12,6 +12,8 @@ const empleosGetAll = async (req = request, res = response) => {
     const query = { estado: true };
     const ordenQuery = { fechaCreacion: orden };
 
+    debugger;
+
     try {
         const [total, jobs] = await Promise.all([
             Job.countDocuments(query),
@@ -37,26 +39,35 @@ const empleosGetAll = async (req = request, res = response) => {
 //* Job DELETE Controller *
 //* --------------------- *//
 const empleosDelete = async (req = request, res = response) => {
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    console.log('[empleosDelete] - Ejecutando tarea de eliminación programada desde el controlador...');
 
-    const twoMonthsAgo = new Date();
-    twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
+    const days = req.query.days;
+
+
+    if (!days || isNaN(Number(days))) {
+        return res.status(400).json({
+            message: '[empleosDelete] - El parámetro days debe ser un número válido.'
+        });
+    }
+
+    // Calcula la fecha de corte para eliminar registros más antiguos que la cantidad de días especificada.
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - days);
 
     try {
         const result = await Job.deleteMany({
             fechaCreacion: {
-                $lt: twoMonthsAgo
+                $lt: currentDate
             }
         });
 
         res.status(200).json({
-            message: 'Registros antiguos eliminados',
+            message: `[empleosDelete] - Se han eliminado ${result.deletedCount} registros con ${days} días o más de antigüedad.`,
             details: result
         });
     } catch (err) {
         res.status(500).json({
-            message: 'Error al borrar registros',
+            message: `[empleosDelete] - Error al borrar registros con ${days} días o más de antigüedad.`,
             error: err
         });
     }

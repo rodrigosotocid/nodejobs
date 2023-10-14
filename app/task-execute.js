@@ -27,8 +27,8 @@ const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
         console.log('[task] - Task 02');
         await obtenerEmpleate();
 
-        // console.log('[task] - Task 03');
-        // await obtenerIndeed();
+        console.log('[task] - Task 03');
+        await obtenerIndeed();
 
         console.log(`[task] - Tarea ejecutada y almacenada en la BD el ${fechaHoraActual()}.`);
     } catch (error) {
@@ -43,17 +43,26 @@ const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
 //*---------------------------------------------*/
 const taskDeleteJob = cron.schedule(CRON_CADA_7_DIAS, async () => {
     console.log('[taskDeleteJob] - Ejecutando tarea de eliminación programada...');
-    const twoMonthsAgo = new Date();
-    twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
+
+    const days = 60;
+
+    if (!days || isNaN(Number(days))) {
+        console.log('[taskDeleteJob] - El valor days debe ser un número válido.');
+        return;
+    }
+
+    // Calcula la fecha de corte para eliminar registros más antiguos que la cantidad de días especificada.
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - days);
 
     try {
         console.log(`[taskDeleteJob] - recuperando registros antiguos de la DB...`);
         const result = await Job.deleteMany({
             fechaCreacion: {
-                $lt: twoMonthsAgo
+                $lt: currentDate
             }
         });
-        console.log(`[taskDeleteJob] - ${result.deletedCount} registros antiguos eliminados`);
+        console.log(`[taskDeleteJob] - Se han eliminado ${result.deletedCount} registros con ${days} días o más de antigüedad.`);
         return true;
 
     } catch (err) {

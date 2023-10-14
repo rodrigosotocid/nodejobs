@@ -16,8 +16,8 @@ const executeJobs = async (req = request, res = response) => {
         console.log('\n[executeJobs] - Controller Task 02');
         await obtenerEmpleate();
 
-        // console.log('\n[executeJobs] - Controller Task 03');
-        // await obtenerIndeed();
+        console.log('\n[executeJobs] - Controller Task 03');
+        await obtenerIndeed();
 
         // console.log('\n[executeJobs] - Controller Task 04');
         // await obtenerInfojobs();

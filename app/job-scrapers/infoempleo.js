@@ -3,7 +3,6 @@ const setupBrowser = require('../browser-setup');
 const Job = require('../../models/job');
 const { saveJobs } = require('../save-jobs');
 const { URL_INFOEMPLEO, PAGE_GOTO } = require('../../helpers/constantes');
-const { delay } = require('../../helpers/funciones');
 
 
 const infoempleo = async () => {

@@ -11,54 +11,45 @@ const indeed = async () => {
     const { browser, page } = await setupBrowser();
     const todasLasOfertas = [];
 
-    browser = await puppeteer.launch({ headless: false });
-
     const response = await page.goto(URL_INDEED, PAGE_GOTO);
     console.log(`[indeed] - Status code: ${response.status()}`);
 
     //* page evaluate
     const enlaces = await page.evaluate(() => {
         const links = [];
-        const elements = document.querySelectorAll('.animated-fast.fadeIn.ng-scope');
+        const elements = document.querySelectorAll('.resultContent');
 
         for (const element of elements) {
             const link = element.querySelector('h2 a')?.href ?? null;
-            alert(link);
             if (link !== null) links.push(link);
         }
         return links;
     });
 
     for (const enlace of enlaces) {
-
         await page.goto(enlace, PAGE_GOTO);
-        // await page.waitForSelector('h1.regular');
 
         const jobs = await page.evaluate(() => {
 
             const job = {};
-            job.titulo = document.querySelector('h1 span')?.innerText;
-            console.log(job.titulo);
-            // job.empresa = document.querySelector('.companyname>a:nth-child(1)')?.innerText ?? '';
+            job.titulo = document.querySelector('h1 span')?.innerText ?? 'Sin especificar';
+            job.empresa = document.querySelector("#viewJobSSRRoot>div>div.css-1quav7f.eu4oa1w0>div>div>div.jobsearch-JobComponent.css-u4y1in.eu4oa1w0.jobsearch-JobComponent-bottomDivider>div.jobsearch-InfoHeaderContainer.jobsearch-DesktopStickyContainer.css-zt53js.eu4oa1w0>div:nth-child(1)>div.css-2wyr5j.eu4oa1w0>div>div>div>div.css-1h46us2.eu4oa1w0>div>span>a")?.innerText ?? 'Sin especificar';
             job.fechaCreacion = Date.now();
             job.url = '';
             job.fuente = 'Indeed';
-            // job.experiencia = document.querySelector('div.offer-excerpt>ul:nth-child(1)>li:nth-child(1)>p')?.innerText;
-            // job.salario = document.querySelector('div.offer-excerpt>ul:nth-child(1)>li:nth-child(2)>p')?.innerText;
-            // job.categoria = document.querySelector('div.offer-excerpt>ul:nth-child(2)>li:nth-child(2)>p')?.innerText;
-            // job.descripcion = document.querySelector('.offer')?.innerHTML;
-            // job.descripcion = job.descripcion.replace(/\sclass="[^"]*"/g, '').replace(/<pre>/g, '<p>').replace(/<\/pre>/g, '</p>');
-            // job.descripcion = job.descripcion.replace(/<\/?[^>]+(>|$)/g, "");
-            // job.fechaPublicacion = document.querySelector('.mt10')?.innerText;
-            // job.fechaPublicacion = job.fechaPublicacion.trimStart();
-            // job.vacantes = document.querySelector('div.offer-excerpt>ul:nth-child(3)>li:nth-child(1)>p')?.innerText;
-            // job.inscritos = document.querySelector('div.offer-excerpt>ul:nth-child(3)>li:nth-child(2)>p')?.innerText;
-            job.logo = 'https://res.cloudinary.com/dsidiwm77/image/upload/v1692266273/jobLogo/wmpyazfwjubrhtxrh0ud.svg';
-            // job.area = document.querySelector('div.offer-excerpt>ul:nth-child(2)>li:nth-child(1)>p')?.innerText;
-            // job.contrato = document.querySelector('div.offer-excerpt>ul:nth-child(4)>li:nth-child(1)>p')?.innerText;
-            // job.localidad = document.querySelector('.block')?.innerText;
-            // job.localidad = job.localidad.trimStart();
-
+            job.salario = document.querySelector('#salaryInfoAndJobType > span')?.innerText ?? 'Sin especificar';
+            job.categoria = 'Sin especificar';
+            job.descripcion = document.querySelector('#jobDescriptionText')?.innerHTML;
+            job.descripcion = job.descripcion.replace(/\sclass="[^"]*"/g, '').replace(/<pre>/g, '<p>').replace(/<\/pre>/g, '</p>');
+            job.descripcion = job.descripcion.replace(/<\/?[^>]+(>|$)/g, "");
+            job.fechaPublicacion = 'Sin especificar';
+            job.vacantes = 'Sin especificar';
+            job.inscritos = 'Sin especificar';
+            job.logo = 'https://res.cloudinary.com/dsidiwm77/image/upload/v1697274168/jobLogo/zakfgw1wlcx40n0m21uc.png';
+            job.area = 'Sin especificar';
+            job.contrato = document.querySelector('#jobDetailsSection > div:nth-child(3) > div.css-1hplm3f.eu4oa1w0 > div > div:nth-child(2) > div > div')?.innerText ?? 'Sin especificar';
+            job.localidad = document.querySelector("#viewJobSSRRoot > div > div.css-1quav7f.eu4oa1w0 > div > div > div.jobsearch-JobComponent.css-u4y1in.eu4oa1w0.jobsearch-JobComponent-bottomDivider > div.jobsearch-InfoHeaderContainer.jobsearch-DesktopStickyContainer.css-zt53js.eu4oa1w0 > div:nth-child(1) > div.css-2wyr5j.eu4oa1w0 > div > div > div > div:nth-child(2) > div")?.innerText ?? 'Sin especificar';
+            job.pais = 'España';
             return job;
         });
 
@@ -75,7 +66,7 @@ const indeed = async () => {
     }
 
     console.log(`[indeed] - Total a guardar: <<${todasLasOfertas.length} items>>`);
-    // if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
+    if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
 
     await browser.close();
     console.log('[indeed] - End...');
