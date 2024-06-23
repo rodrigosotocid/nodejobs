@@ -7,10 +7,7 @@ const { fechaHoraActual } = require('../helpers/date-format');
 const task = cron.schedule('0 0 */6 * * *', async () => {
     try {
         console.log('Ejecutando tarea programada...');
-
         await infoempleo();
-
-
         console.log(`* ${fechaHoraActual()} - Tarea ejecutada y almacenada en DB.`);
     } catch (error) {
         console.error('Error al guardar el elemento:', error);
