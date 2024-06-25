@@ -1,12 +1,14 @@
 const setupBrowser = require('../browser-setup');
 const Job = require('../../models/job');
-const { saveJobs } = require('../save-jobs');
+const { saveJobs, insertarDatosEnSupabase } = require('../save-jobs');
 const { URL_EMPLEATE, PAGE_GOTO } = require('../../helpers/constantes');
-const { delay } = require('../../helpers/funciones');
+const { delay, mostrarHoraActual, validarFecha } = require('../../helpers/funciones');
 
 
 const empleate = async () => {
-    console.log('[empleate] - Init...');
+    var prefix = "[empleate]";
+    console.log(`${prefix} - Init...`);
+
     const { browser, page } = await setupBrowser();
     const todasLasOfertas = [];
 
@@ -15,19 +17,19 @@ const empleate = async () => {
 
     //* Escuchar el evento dialog y descartarlo (dismiss)
     page.on('dialog', async dialog => {
-        console.log(`[empleate] - Se encontró un diálogo: ${dialog.message()}`);
+        console.log(`${prefix} - Se encontró un diálogo: ${dialog.message()}`);
         await dialog.dismiss();
     });
 
     const response = await page.goto(URL_EMPLEATE, [5000, { waitUntil: "domcontentloaded" }]);
-    console.log(`[empleate] - Status ${response.status()}`);
+    console.log(`${prefix} - Status ${response.status()}`);
     await delay(3000);
 
     //* selecciona cantidad de ofertas por página
     const pagesizeinput = await page.select('#pagesizeinput', '100');
-    console.log('[empleate] - before waiting 3 seconds: ', pagesizeinput);
+    console.log(`${prefix} - before waiting 3 seconds: ${pagesizeinput}`);
     await delay(3000);
-    console.log('[empleate] - after waiting 3 seconds');
+    console.log(`${prefix} - after waiting 3 seconds`);
 
     //* Obteniendo enlaces de la página
     const enlaces = await page.evaluate(() => {
@@ -40,7 +42,8 @@ const empleate = async () => {
         }
         return links;
     });
-    console.log(`[empleate] - ${enlaces.length} enlaces recuperados`);
+    console.log(`${prefix} - ${enlaces.length} enlaces recuperados`);
+    mostrarHoraActual(prefix);
 
     //* Recorriendo cada uno de los enlaces
     for (const enlace of enlaces) {
@@ -70,7 +73,8 @@ const empleate = async () => {
             job.area = job.categoria;
             job.contrato = document.querySelector(`${CSS_BASE} section:nth-child(6) > div > div:nth-child(4) > span.ng-binding`)?.innerText;
             job.localidad = document.querySelector(`${CSS_BASE} section:nth-child(6) > div > div:nth-child(14) > span.ng-binding > a:nth-child(1)`)?.innerText;
-            job.pais = document.querySelector(`${CSS_BASE} section:nth-child(6) > div > div:nth-child(14) > span.ng-binding > a:nth-child(2)`)?.innerText;
+            var pais = document.querySelector(`${CSS_BASE} section:nth-child(6) > div > div:nth-child(14) > span.ng-binding > a:nth-child(2)`)?.innerText;
+            job.pais = (pais == "Sin especificar" || pais == undefined) ? 'España' : pais;
 
             return job;
         });
@@ -85,13 +89,14 @@ const empleate = async () => {
                 }
             }
         }
+        jobs.fechaPublicacion = validarFecha(jobs.fechaPublicacion);
     }
-
-    console.log(`[empleate] - ${todasLasOfertas.length} items adds`);
+    mostrarHoraActual(prefix);
+    console.log(`${prefix} - ${todasLasOfertas.length} items adds`);
     if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
 
     await browser.close();
-    console.log('[empleate] - End');
+    console.log(`${prefix} - End`);
 
 };
 

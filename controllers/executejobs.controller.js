@@ -7,35 +7,35 @@ const { fechaHoraActual } = require('../helpers/funciones');
 
 //* Job MANUAL EXECUTE Controller *//
 const executeJobs = async (req = request, res = response) => {
-    console.log('[executeJobs] - Execute task from Controller...');
+    var prefix = "[executeJobs]";
+    console.log(`${prefix} - Execute task from Controller...`);
     try {
 
-        console.log('\n[executeJobs] - Controller Task 01');
+        console.log(`\n${prefix} - Controller Task 01 [obtenerInfoempleo]`);
         await obtenerInfoempleo();
 
-        console.log('\n[executeJobs] - Controller Task 02');
+        console.log(`\n${prefix} - Controller Task 02 [obtenerEmpleate]`);
         await obtenerEmpleate();
 
-        console.log('\n[executeJobs] - Controller Task 03');
+        console.log(`\n${prefix} - Controller Task 03 [obtenerIndeed]`);
         await obtenerIndeed();
 
-        // console.log('\n[executeJobs] - Controller Task 04');
+        // console.log(`\n${prefix} - Controller Task 04 [obtenerInfojobs]`);
         // await obtenerInfojobs();
 
-
         return res.status(200).json({
-            msg: '[executeJobs] - Items recuperados: ** OK **',
+            msg: `${prefix} - Items recuperados: ** OK **`,
             time: fechaHoraActual()
         })
 
     } catch (error) {
         res.status(500).json({
-            message: '[executeJobs] - Error al ejecutar manualmente los jobs',
+            message: `${prefix} - Error al ejecutar manualmente los jobs`,
             error: error,
             time: fechaHoraActual()
         });
     }
-    console.log('[executeJobs] - END Execute task from Controller...');
+    console.log(`${prefix} - END Execute task from Controller...`);
 }
 
 

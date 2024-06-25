@@ -10,7 +10,6 @@ const infoJobs = async () => {
     const { browser, page } = await setupBrowser();
     const todasLasOfertas = [];
 
-    browser = await puppeteer.launch({ headless: false });
     const response = await page.goto(URL_INFOJOBS, PAGE_GOTO);
     console.log(`[infoJobs] - Status code: ${response.status()}`);
 
@@ -26,9 +25,58 @@ const infoJobs = async () => {
         }
         return links;
     });
+    console.log(`[infoJobs] - ${enlaces.length} enlaces recuperados`);
+
+    for (const enlace of enlaces) {
+
+        await page.goto(enlace, PAGE_GOTO);
+        await page.waitForSelector('h1.regular');
+
+        const jobs = await page.evaluate(() => {
+
+            const job = {};
+            job.titulo = document.querySelector('h1.regular')?.innerText;
+            job.empresa = document.querySelector('.companyname>a:nth-child(1)')?.innerText ?? '';
+            job.fechaCreacion = Date.now();
+            job.url = '';
+            job.fuente = 'Infoempleo';
+            job.experiencia = document.querySelector('div.offer-excerpt>ul:nth-child(1)>li:nth-child(1)>p')?.innerText;
+            job.salario = document.querySelector('div.offer-excerpt>ul:nth-child(1)>li:nth-child(2)>p')?.innerText;
+            job.categoria = document.querySelector('div.offer-excerpt>ul:nth-child(2)>li:nth-child(2)>p')?.innerText;
+            job.descripcion = document.querySelector('.offer')?.innerHTML;
+            job.descripcion = job.descripcion.replace(/\sclass="[^"]*"/g, '').replace(/<pre>/g, '<p>').replace(/<\/pre>/g, '</p>');
+            // job.descripcion = job.descripcion.replace(/<\/?[^>]+(>|$)/g, "");
+            job.fechaPublicacion = document.querySelector('.mt10')?.innerText;
+            job.fechaPublicacion = job.fechaPublicacion.trimStart();
+            job.vacantes = document.querySelector('div.offer-excerpt>ul:nth-child(3)>li:nth-child(1)>p')?.innerText;
+            job.inscritos = document.querySelector('div.offer-excerpt>ul:nth-child(3)>li:nth-child(2)>p')?.innerText;
+            job.logo = 'https://res.cloudinary.com/dsidiwm77/image/upload/v1692266273/jobLogo/wmpyazfwjubrhtxrh0ud.svg';
+            job.area = document.querySelector('div.offer-excerpt>ul:nth-child(2)>li:nth-child(1)>p')?.innerText;
+            job.contrato = document.querySelector('div.offer-excerpt>ul:nth-child(4)>li:nth-child(1)>p')?.innerText;
+            job.localidad = document.querySelector('.block')?.innerText;
+            job.localidad = job.localidad.trimStart();
+            job.pais = 'España';
+
+            return job;
+        });
+
+        if (jobs.titulo && jobs.titulo.trim() !== '') {
+            jobs.url = enlace ?? '';
+            const existeRegistro = await Job.findOne({ titulo: jobs.url });
+
+            if (!existeRegistro) {
+                if (!todasLasOfertas.some(empleo => empleo.url === jobs.url)) {
+                    todasLasOfertas.push(jobs);
+                }
+            }
+        }
+    }
+
+    console.log(`[infoJobs] - Total a guardar: <<${todasLasOfertas.length} items>>`);
+    if (todasLasOfertas.length > 0) await saveJobs(todasLasOfertas);
 
     await browser.close();
-
+    console.log('[infoJobs] - End Task 01');
 };
 
 module.exports = infoJobs;

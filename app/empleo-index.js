@@ -48,7 +48,7 @@ async function obtenerIndeed() {
 async function obtenerInfojobs() {
     try {
         console.log('[obtenerInfojobs] - Start');
-        await Infojobs();
+        // await Infojobs();
         console.log('[obtenerInfojobs] - End');
     } catch (error) {
         console.error('Error al obtener información de Infojobs:', error);
