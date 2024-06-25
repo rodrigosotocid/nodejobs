@@ -4,6 +4,8 @@
 ```
 PORT=
 MONGODB_CNN=
+SUPABASE_KEY=
+SUPABASE_URL=
 ```
 
 ### Iniciar la aplicación

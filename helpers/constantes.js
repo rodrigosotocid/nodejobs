@@ -1,16 +1,19 @@
 module.exports = {
     // Cron
     CRON_CADA_1_MINUTO: '* * * * *',
-    CRON_CADA_5_MINUTOS: '*/2 * * * *',
+    CRON_CADA_5_MINUTOS: '*/5 * * * *',
     CRON_CADA_3_HORAS: '0 */3 * * *',
-    CRON_CADA_4_HORAS: '0 0 */4 * * *',
+    CRON_CADA_4_HORAS: '0 */4 * * *',
+    CRON_CADA_6_HORAS: '0 */6 * * *',
+    CRON_CADA_12_HORAS: '0 0,12 * * *',
+    CRON_CADA_24_HORAS: '0 0 * * *',
     CRON_CADA_7_DIAS: '0 0 0 */7 * *',
     // Scraping
     URL_INFOEMPLEO: 'https://www.infoempleo.com/trabajo/',
     URL_EMPLEATE: 'https://www.empleate.gob.es/empleo/#/trabajo?search=*&pag=0',
     URL_INFOJOBS: 'https://www.infojobs.net/jobsearch/search-results/list.xhtml',
-    // URL_INDEED: 'https://es.indeed.com/jobs?q=&l=Espa%C3%B1a&from=searchOnHP&vjk=070dde3289936d3c',
     URL_INDEED: 'https://es.indeed.com/jobs?q=&l=Espa%C3%B1a&from=searchOnHP',
+    URL_JOBTODAY: 'https://jobtoday.com/es/trabajos',
     BROWSER_ARGS: { headless: 'new', ignoreDefaultArgs: ['--disable-extensions'], args: ['--no-sandbox', '--disable-setuid-sandbox'], },
     BROWSER_ARGS_WITH_HEAD: { headless: false, ignoreDefaultArgs: ['--disable-extensions'], args: ['--no-sandbox', '--disable-setuid-sandbox'], },
     VIEWPORT: { width: 1920, height: 1080 },

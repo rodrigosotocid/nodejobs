@@ -60,10 +60,16 @@ const delay = (time) => {
     });
 }
 
+const obtenerUltimaParte = (cadena) => {
+    const partes = cadena.split(',');
+    return partes.length > 1 ? partes[partes.length - 1].trim() : cadena;
+}
+
 module.exports = {
     fechaHoraActual,
     mostrarHoraActual,
     obtenerFechaHoy,
     validarFecha,
     delay,
+    obtenerUltimaParte,
 }

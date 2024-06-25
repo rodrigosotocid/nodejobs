@@ -4,12 +4,12 @@
 
 Fuente: https://evaporto.com/10-mejores-portales-empleo-encontrar-trabajo-espana/
 
-Infojobs https://www.infojobs.net/
-infoempleo https://www.infoempleo.com/
-Indeed https://es.indeed.com/
-Portal de empleo: Empléate  https://www.empleate.gob.es/
-LinkedIn https://www.linkedin.com/
+OK infoempleo https://www.infoempleo.com/
+OK Indeed https://es.indeed.com/
+OK Empléate  https://www.empleate.gob.es/
 JobToday https://jobtoday.com/es/trabajos
+Infojobs https://www.infojobs.net/
+LinkedIn https://www.linkedin.com/
 Monster https://www.monster.es/trabajo/buscar?q=&where=espa%C3%B1a&page=1&so=m.h.s
 Trabajos.com https://www.trabajos.com/ofertas-empleo/?IDPAIS=100&CADENA=&SUBMIT=Buscar+empleo
 Jobatus https://www.jobatus.es/trabajo?q=todos&l=

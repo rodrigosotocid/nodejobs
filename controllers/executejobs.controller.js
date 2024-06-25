@@ -1,16 +1,17 @@
 const { response, request } = require('express');
 const axios = require('axios');
-const { obtenerInfoempleo, obtenerEmpleate, obtenerIndeed, obtenerInfojobs, } = require('../app/empleo-index');
+const { obtenerInfoempleo, obtenerEmpleate, obtenerIndeed, obtenerInfojobs, obtenerJobtoday, } = require('../app/empleo-index');
 const { URL_WP_POST_CREATE } = require('../helpers/constantes');
 const { fechaHoraActual } = require('../helpers/funciones');
 
 
 //* Job MANUAL EXECUTE Controller *//
 const executeJobs = async (req = request, res = response) => {
+
     var prefix = "[executeJobs]";
     console.log(`${prefix} - Execute task from Controller...`);
-    try {
 
+    try {
         console.log(`\n${prefix} - Controller Task 01 [obtenerInfoempleo]`);
         await obtenerInfoempleo();
 
@@ -19,6 +20,9 @@ const executeJobs = async (req = request, res = response) => {
 
         console.log(`\n${prefix} - Controller Task 03 [obtenerIndeed]`);
         await obtenerIndeed();
+
+        console.log(`\n${prefix} - Controller Task 04 [obtenerJobtoday]`);
+        await obtenerJobtoday();
 
         // console.log(`\n${prefix} - Controller Task 04 [obtenerInfojobs]`);
         // await obtenerInfojobs();
@@ -35,7 +39,7 @@ const executeJobs = async (req = request, res = response) => {
             time: fechaHoraActual()
         });
     }
-    console.log(`${prefix} - END Execute task from Controller...`);
+    // console.log(`${prefix} - END Execute task from Controller...`);
 }
 
 

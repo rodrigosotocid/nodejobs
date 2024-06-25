@@ -8,6 +8,7 @@ const { Infoempleo, Empleate, Indeed, Infojobs } = require('./job-scrapers/');
 
 const { VIEWPORT, BROWSER_ARGS, NAV_CONFIG, PAGE_GOTO, URL_INFOJOBS, } = require('../helpers/constantes');
 const { delay } = require('../helpers/funciones');
+const Jobtoday = require('./job-scrapers/jobtoday');
 
 
 //* 1 - GET INFOEMPLEO *//
@@ -44,7 +45,18 @@ async function obtenerIndeed() {
     }
 };
 
-//* 4 - GET INFOJOBS *//
+//* 4 - GET JOBTODAY *//
+async function obtenerJobtoday() {
+    try {
+        console.log('[obtenerJobtoday] - Start');
+        await Jobtoday();
+        console.log('[obtenerJobtoday] - End');
+    } catch (error) {
+        console.error('Error al obtener información de Jobtoday:', error);
+    }
+};
+
+//* 5 - GET INFOJOBS *//
 async function obtenerInfojobs() {
     try {
         console.log('[obtenerInfojobs] - Start');
@@ -111,6 +123,7 @@ module.exports = {
     obtenerInfoempleo,
     obtenerEmpleate,
     obtenerIndeed,
+    obtenerJobtoday,
     obtenerInfojobs,
     ejecutaEndpointWpCron,
 }

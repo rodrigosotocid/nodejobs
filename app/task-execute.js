@@ -1,12 +1,14 @@
 const cron = require('node-cron');
 const axios = require('axios');
-const { obtenerInfoempleo, obtenerEmpleate, obtenerIndeed } = require('./empleo-index');
+const { obtenerInfoempleo, obtenerEmpleate, obtenerIndeed, obtenerJobtoday } = require('./empleo-index');
 const { fechaHoraActual } = require('../helpers/funciones');
 const {
     CRON_CADA_1_MINUTO,
     CRON_CADA_5_MINUTOS,
     CRON_CADA_3_HORAS,
     CRON_CADA_4_HORAS,
+    CRON_CADA_6_HORAS,
+    CRON_CADA_24_HORAS,
     CRON_CADA_7_DIAS,
     URL_WP_CRON,
     URL_WP_POST_CREATE
@@ -17,7 +19,7 @@ const { sendJobsPostToWP } = require('../controllers/executejobs.controller');
 //*---------------------------------------------*/
 //* Tarea programada para ejecutar cada 4 horas
 //*---------------------------------------------*/
-const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
+const task = cron.schedule(CRON_CADA_6_HORAS, async () => {
     console.log('\n[task] - Ejecutando tarea programada...');
 
     try {
@@ -29,6 +31,9 @@ const task = cron.schedule(CRON_CADA_4_HORAS, async () => {
 
         console.log('[task] - Task 03');
         await obtenerIndeed();
+
+        console.log('[task] - Task 04');
+        await obtenerJobtoday();
 
         console.log(`[task] - Tarea ejecutada y almacenada en la BD el ${fechaHoraActual()}.`);
     } catch (error) {
@@ -76,7 +81,7 @@ const taskDeleteJob = cron.schedule(CRON_CADA_7_DIAS, async () => {
 //* Programa la ejecución cada 3 horas (cada 180 minutos) */
 //*-------------------------------------------------------*/
 
-const taskCreaPostWP = cron.schedule(CRON_CADA_3_HORAS, async () => {
+const taskCreaPostWP = cron.schedule(CRON_CADA_24_HORAS, async () => {
     console.log('\n[taskCreaPostWP] - Ejecutando tarea programada...');
     try {
         const response = await axios.get(URL_WP_POST_CREATE);
