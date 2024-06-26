@@ -18,6 +18,7 @@ const Jobtoday = async () => {
 
         // modal cookies
         if (pagina === 1) {
+            await page?.waitForSelector('div.modal-bottom.mt-8>div>button.btn.jt-btn-primary');
             await page?.click('div.modal-bottom.mt-8>div>button.btn.jt-btn-primary');
         }
 
