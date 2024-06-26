@@ -17,10 +17,10 @@ const Jobtoday = async () => {
         await page.goto(`${URL_JOBTODAY}/madrid?page=${pagina}`, PAGE_GOTO);
 
         // modal cookies
-        if (pagina === 1) {
-            await page?.waitForSelector('div.modal-bottom.mt-8>div>button.btn.jt-btn-primary');
-            await page?.click('div.modal-bottom.mt-8>div>button.btn.jt-btn-primary');
-        }
+        // if (pagina === 1) {
+        //     await page?.waitForSelector('div.modal-bottom.mt-8>div>button.btn.jt-btn-primary');
+        //     await page?.click('div.modal-bottom.mt-8>div>button.btn.jt-btn-primary');
+        // }
 
         let enlaces = await page.evaluate(() => {
             const links = [];
