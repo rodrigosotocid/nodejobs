@@ -10,7 +10,7 @@ const coleccionesPermitidas = [
 
 
 const search = async (req = request, res = response) => {
-    const { coleccion, termino } = req.params;
+    const { coleccion, termino = '' } = req.params;
 
     if (!coleccionesPermitidas.includes(coleccion)) {
         return res.status(400).json({
@@ -36,30 +36,32 @@ const search = async (req = request, res = response) => {
 //* buscarJobs
 //*------------*//
 const buscarJobs = async (termino = '', res = response) => {
-    const esMongoID = ObjectId.isValid(termino);
+    let query = {};
 
-    if (esMongoID) {
-        const job = await Job.findById(termino);
+    if (termino) {
+        const esMongoID = ObjectId.isValid(termino);
 
-        return res.json({
-            total: (job) ? 1 : 0,
-            results: (job) ? [job] : []
-        });
+        if (esMongoID) {
+            const job = await Job.findById(termino);
+
+            return res.json({
+                total: job ? 1 : 0,
+                results: job ? [job] : []
+            });
+        }
+
+        const terminoRegex = new RegExp(termino, 'i');
+        query = { titulo: terminoRegex };
     }
-    const terminoRegex = new RegExp(termino, 'i');
 
-    const query = {
-        titulo: terminoRegex,
-    };
-
-    const [total, job] = await Promise.all([
+    const [total, jobs] = await Promise.all([
         Job.countDocuments(query),
         Job.find(query)
     ]);
 
     res.json({
         total,
-        results: job
+        results: jobs
     });
 }
 

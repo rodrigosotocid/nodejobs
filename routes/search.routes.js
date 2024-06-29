@@ -8,7 +8,7 @@ const router = Router();
 // api/search/jobs/málaga
 // api/search/localidad/barce
 
-router.get('/:coleccion/:termino', search);
+router.get('/:coleccion/:termino?', search);
 
 
 module.exports = router;
