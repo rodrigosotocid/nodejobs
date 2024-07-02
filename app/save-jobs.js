@@ -8,8 +8,8 @@ const saveJobs = async (jobsArray) => {
         const result = await Job.insertMany(jobsArray);
         console.log('[saveJobs] - saveJobs executed!');
 
-        await insertarDatosEnSupabase(jobsArray);
-        console.log('[saveJobs] - insertarDatosEnSupabase executed!');
+        // await insertarDatosEnSupabase(jobsArray);
+        // console.log('[saveJobs] - insertarDatosEnSupabase executed!');
 
         return result;
 

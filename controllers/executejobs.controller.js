@@ -1,6 +1,15 @@
-const { response, request } = require('express');
+const {
+    response,
+    request
+} = require('express');
 const axios = require('axios');
-const { obtenerInfoempleo, obtenerEmpleate, obtenerIndeed, obtenerInfojobs, obtenerJobtoday, } = require('../app/empleo-index');
+const {
+    obtenerInfoempleo,
+    obtenerEmpleate,
+    obtenerIndeed,
+    obtenerInfojobs,
+    obtenerJobtoday,
+} = require('../app/empleo-index');
 const { URL_WP_POST_CREATE } = require('../helpers/constantes');
 const { fechaHoraActual } = require('../helpers/funciones');
 
