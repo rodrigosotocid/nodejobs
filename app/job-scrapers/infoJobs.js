@@ -62,12 +62,10 @@ const infoJobs = async () => {
 
         if (jobs.titulo && jobs.titulo.trim() !== '') {
             jobs.url = enlace ?? '';
-            const existeRegistro = await Job.findOne({ titulo: jobs.url });
+            const existeRegistro = await Job.findOne({ titulo: jobs.titulo, empresa: jobs.empresa });
 
-            if (!existeRegistro) {
-                if (!todasLasOfertas.some(empleo => empleo.url === jobs.url)) {
-                    todasLasOfertas.push(jobs);
-                }
+            if (!existeRegistro && jobs.url !== '') {
+                todasLasOfertas.push(jobs);
             }
         }
     }
