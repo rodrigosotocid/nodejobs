@@ -8,7 +8,7 @@ const router = Router();
 // api/search/jobs/málaga
 // api/search/localidad/barce
 
+// Ruta para buscar trabajos con el parámetro `termino` opcional y parámetros de paginación
 router.get('/:coleccion/:termino?', search);
-
 
 module.exports = router;

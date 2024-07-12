@@ -11,6 +11,7 @@ const coleccionesPermitidas = [
 
 const search = async (req = request, res = response) => {
     const { coleccion, termino = '' } = req.params;
+    const { page = 1, limit = 20 } = req.query; // Añadir parámetros de paginación
 
     if (!coleccionesPermitidas.includes(coleccion)) {
         return res.status(400).json({
@@ -20,7 +21,7 @@ const search = async (req = request, res = response) => {
 
     switch (coleccion) {
         case 'jobs':
-            buscarJobs(termino, res);
+            await buscarJobs(termino, res, page, limit);
             break;
         case 'localidad':
             buscarJobsLocalidad(termino, res);
@@ -35,7 +36,7 @@ const search = async (req = request, res = response) => {
 //*------------*//
 //* buscarJobs
 //*------------*//
-const buscarJobs = async (termino = '', res = response) => {
+const buscarJobs = async (termino = '', res = response, page = 1, limit = 20) => {
     let query = {};
 
     if (termino) {
@@ -54,16 +55,53 @@ const buscarJobs = async (termino = '', res = response) => {
         query = { titulo: terminoRegex };
     }
 
+    const skip = (page - 1) * limit;
+
     const [total, jobs] = await Promise.all([
         Job.countDocuments(query),
-        Job.find(query)
+        Job.find(query).skip(skip).limit(limit)
     ]);
 
     res.json({
         total,
-        results: jobs
+        results: jobs,
+        page: parseInt(page),
+        limit: parseInt(limit),
+        totalPages: Math.ceil(total / limit)
     });
 }
+
+
+
+// const buscarJobs = async (termino = '', res = response) => {
+//     let query = {};
+
+//     if (termino) {
+//         const esMongoID = ObjectId.isValid(termino);
+
+//         if (esMongoID) {
+//             const job = await Job.findById(termino);
+
+//             return res.json({
+//                 total: job ? 1 : 0,
+//                 results: job ? [job] : []
+//             });
+//         }
+
+//         const terminoRegex = new RegExp(termino, 'i');
+//         query = { titulo: terminoRegex };
+//     }
+
+//     const [total, jobs] = await Promise.all([
+//         Job.countDocuments(query),
+//         Job.find(query)
+//     ]);
+
+//     res.json({
+//         total,
+//         results: jobs
+//     });
+// }
 
 //*--------------------*//
 //* buscarJobsLocalidad
